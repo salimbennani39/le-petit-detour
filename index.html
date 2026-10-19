@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le Petit Détour · Cantine à midi, bistrot le soir · Tanger</title>
+<meta name="description" content="Le Petit Détour, cantine-bistrot rue de Hollande à Tanger. Sandwichs au pain croustillant le midi, assiettes à partager le soir. Ouvert de 12h à minuit.">
+<meta name="theme-color" content="#0E1A1F">
+<link rel="canonical" href="https://salimbennani39.github.io/le-petit-detour/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Le Petit Détour · Cantine à midi, bistrot le soir · Tanger">
+<meta property="og:description" content="Cantine-bistrot rue de Hollande à Tanger. Sandwichs au pain croustillant le midi, assiettes à partager le soir. Réservez en deux clics.">
+<meta property="og:image" content="https://salimbennani39.github.io/le-petit-detour/og.jpg">
+<meta property="og:url" content="https://salimbennani39.github.io/le-petit-detour/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://salimbennani39.github.io/le-petit-detour/og.jpg">
+
+<link rel="icon" href="assets/logo-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..800,0..100;1,9..144,300..800,0..100&family=Outfit:wght@300..600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/hero-day.webp">
+<link rel="preload" as="image" href="assets/hero-night.webp">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  /* Two grounds that hold for the whole page, one brand hue in two lightnesses.
+     Night is the body ground; day is a property of the left column. */
+  :root {
+    --night: #0E1A1F;  --night-2: #16262D;  --night-ink: #F2E9DC;  --night-soft: #B9B0A2;
+    --day:   #E3EBEA;  --day-2:   #D3DFDF;  --day-ink:   #13232A;  --day-soft:   #455960;
+    --orange: #F08A3C; --orange-day: #A2470F;
+
+    --sc-canvas: var(--night);  --sc-surface: var(--night-2);
+    --sc-ink: var(--night-ink); --sc-ink-soft: var(--night-soft);
+    --sc-accent: var(--orange); --sc-accent-ink: #13232A;
+    --sc-font-display: "Fraunces", Georgia, serif;
+    --sc-font-text: "Outfit", system-ui, sans-serif;
+    --sc-shadow-color: 200 40% 4%;
+
+    --split: 50;             /* percent of the viewport given to the cantine side */
+    --mid: clamp(2.5rem, 5vw, 5.5rem);   /* clearance each column keeps from the divider */
+  }
+  .is-day   { --sc-canvas: var(--day); --sc-surface: var(--day-2); --sc-ink: var(--day-ink); --sc-ink-soft: var(--day-soft); --sc-accent: var(--orange-day);
+              background: var(--day); color: var(--day-ink); }
+  .is-night { --sc-canvas: var(--night); --sc-surface: var(--night-2); --sc-ink: var(--night-ink); --sc-ink-soft: var(--night-soft); --sc-accent: var(--orange);
+              background: var(--night); color: var(--night-ink); }
+
+  body { font-weight: 350; }
+  .sc-display { font-weight: 560; font-variation-settings: "SOFT" 100, "opsz" 120; letter-spacing: -0.025em; }
+  .sc-display em { font-style: italic; font-weight: 460; }
+  .sc-body { color: var(--sc-ink-soft); }
+  .kicker { font-size: var(--sc-t-xs); letter-spacing: 0.16em; text-transform: uppercase; font-weight: 500; color: var(--sc-ink-soft); margin: 0; }
+  img { height: auto; }
+
+  /* ------------------------------------------------------------ the divider --
+     The chrome of a split stage. A hairline at the split, the two side labels,
+     and the pan-clock: the brand mark whose handle is the page's hour hand. */
+  .divider { position: fixed; inset: 0; z-index: var(--sc-z-chrome); pointer-events: none; }
+  .divider__line { position: absolute; top: 0; bottom: 0; left: 0; width: 1px;
+    background: color-mix(in oklab, var(--orange) 70%, transparent);
+    transform: translateX(var(--split-px, 50vw)); will-change: transform; }
+  .divider__labels { position: absolute; top: 0; left: 0; display: flex; align-items: center;
+    transform: translateX(var(--split-px, 50vw)); will-change: transform; height: 3.4rem; }
+  .divider__labels a { pointer-events: auto; transition: opacity var(--sc-d-base) var(--sc-ease-out); position: absolute; white-space: nowrap; text-decoration: none;
+    font-size: var(--sc-t-xs); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500; padding: .5rem .2rem; }
+  .divider__labels .l-day   { right: .8rem; color: var(--day-ink); background: var(--day); }
+  .divider__labels .l-night { left: .8rem;  color: var(--night-ink); background: var(--night); }
+  .divider__labels a { padding: .35rem .7rem; border-radius: 999px; }
+  .divider__labels a:hover { color: var(--orange-day); }
+  .divider__labels .l-night:hover { color: var(--orange); }
+  .divider__clock { position: absolute; left: 0; bottom: clamp(1rem, 3vh, 1.75rem); pointer-events: auto;
+    transform: translateX(calc(var(--clock-px, 50vw) - 50%)); will-change: transform;
+    display: grid; justify-items: center; gap: .35rem; text-decoration: none; }
+  .divider__clock svg { width: 3.6rem; height: 3.6rem; filter: drop-shadow(0 6px 14px rgb(5 14 18 / .35)); transition: transform var(--sc-d-fast) var(--sc-ease-out); }
+  .divider__clock:active svg { transform: scale(.96); }
+  .divider__time { font-variant-numeric: tabular-nums; font-size: .8rem; font-weight: 500; letter-spacing: .06em;
+    padding: .2rem .55rem; border-radius: 999px; background: var(--night); color: var(--night-ink);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--orange) 55%, transparent); }
+  .divider__clock:hover .divider__time { background: var(--orange); color: #13232A; }
+  .divider__clock .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  .pan__disc { fill: var(--orange); }
+  .pan__ring { fill: none; stroke: #121516; stroke-width: 7; }
+  .pan__hat  { fill: none; stroke: #121516; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .pan__handle { stroke: #121516; stroke-width: 7.5; stroke-linecap: round; }
+
+  /* ---------------------------------------------------------------- pairs --
+     Every flow act is two columns on two grounds. Widths are fixed per act
+     (50/50 before the lamps, 30/70 after), the divider is positioned to match. */
+  .pair { display: grid; grid-template-columns: var(--cols, 50%) 1fr; }
+  .pair > .col { padding-block: var(--sc-section); min-width: 0; }
+  .pair > .col.is-day   { padding-inline: var(--sc-gutter) var(--mid); }
+  .pair > .col.is-night { padding-inline: var(--mid) var(--sc-gutter); }
+  .pair--after { --cols: 30%; }
+  .col__inner { max-width: 36rem; }
+  .col.is-day .col__inner { margin-left: auto; }
+
+  /* ----------------------------------------------------------------- hero -- */
+  .hero .sc-stage { display: grid; grid-template-columns: 1fr 1fr; }
+  .half { position: relative; overflow: clip; isolation: isolate; }
+  .plane { position: absolute; will-change: transform; }
+  .plane--bg { inset: -6% -6%; }
+  .plane--bg img { width: 100%; height: 100%; object-fit: cover; max-width: none; }
+  .half--day .plane--bg img { object-position: 60% 50%; }
+  .half--night .plane--bg img { object-position: 35% 50%; }
+  .atmo { position: absolute; inset: 0; pointer-events: none; }
+  .half--day .atmo { background:
+      linear-gradient(100deg, rgb(255 251 240 / .0) 30%, rgb(255 248 230 / .28) 52%, rgb(255 251 240 / 0) 70%),
+      linear-gradient(to bottom, rgb(227 235 234 / .95) 0%, rgb(227 235 234 / .86) 34%, rgb(227 235 234 / .55) 52%, rgb(227 235 234 / 0) 70%); }
+  .half--night .atmo { background:
+      radial-gradient(60% 45% at 30% 35%, rgb(240 138 60 / .22), transparent 70%),
+      linear-gradient(to bottom, rgb(14 26 31 / .94) 0%, rgb(14 26 31 / .82) 34%, rgb(14 26 31 / .5) 52%, rgb(14 26 31 / 0) 70%); }
+  .plane--plate { max-width: none; pointer-events: none; filter: drop-shadow(0 30px 40px rgb(8 18 22 / .38)); }
+  .half--day .plane--plate { width: clamp(17rem, 31vw, 34rem); left: 6%; bottom: -9%; }
+  .half--night .plane--plate { width: clamp(17rem, 29vw, 32rem); right: -5%; bottom: -7%; }
+  .hero__copy { position: absolute; z-index: 4; top: clamp(5.5rem, 14vh, 9rem); max-width: 30rem; }
+  .half--day .hero__copy { right: var(--mid); left: var(--sc-gutter); text-align: right; margin-left: auto; }
+  .half--night .hero__copy { left: var(--mid); right: var(--sc-gutter); }
+  .hero h1 { margin: 0; font-size: 0; }
+  .hero h1 .part { display: block; font-size: var(--sc-t-4xl); }
+  .hero__wordmark { position: absolute; z-index: 5; top: 1.1rem; left: var(--sc-gutter); width: clamp(8rem, 12vw, 11rem); }
+  .hero__sub { margin-top: var(--sc-4); font-size: var(--sc-t-lg); line-height: 1.4; max-width: 24rem; text-wrap: pretty; }
+  .half--day .hero__sub { margin-left: auto; color: var(--day-soft); }
+  .half--night .hero__sub { color: var(--night-soft); }
+  .hero__beat { display: inline-block; margin-top: var(--sc-5); font-size: var(--sc-t-xs); letter-spacing: .16em; text-transform: uppercase; font-weight: 600; padding: .45rem .85rem; border-radius: 999px; box-shadow: var(--sc-e1); }
+  .half--day .hero__beat { color: var(--orange-day); background: var(--day); }
+  .half--night .hero__beat { color: var(--orange); background: var(--night); }
+
+  /* ------------------------------------------------------------- act two -- */
+  .menu { list-style: none; padding: 0; margin: var(--sc-6) 0 0; border-top: 1px solid var(--sc-hairline-strong); }
+  .menu li { display: grid; grid-template-columns: 1fr auto; gap: .2rem 1rem; padding: .85rem 0; border-bottom: 1px solid var(--sc-hairline); }
+  .menu b { font-family: var(--sc-font-display); font-weight: 560; font-size: 1.22rem; font-variation-settings: "SOFT" 100; letter-spacing: -.01em; }
+  .menu small { grid-column: 1; color: var(--sc-ink-soft); font-size: .94rem; }
+  .menu .price { grid-row: 1 / span 2; grid-column: 2; align-self: center; font-variant-numeric: tabular-nums; font-weight: 500; }
+  .menu .price span { font-size: .72em; letter-spacing: .08em; margin-left: .2em; color: var(--sc-ink-soft); }
+  .duo-img { position: relative; margin-top: var(--sc-7); }
+  .duo-img figure { margin: 0; }
+  .duo-img .a { width: 78%; border-radius: var(--sc-r-md); overflow: hidden; box-shadow: var(--sc-e2); }
+  .duo-img .b { position: absolute; width: 44%; right: 0; bottom: -10%; border-radius: var(--sc-r-md); overflow: hidden; box-shadow: var(--sc-e3); outline: 6px solid var(--sc-canvas); }
+  .duo-img img { width: 100%; height: auto; }
+  .col.is-day .duo-img .a { margin-left: auto; }
+  .col.is-day .duo-img .b { right: auto; left: 0; }
+  .best { margin: var(--sc-7) 0 0; position: relative; }
+  .best img { width: 100%; border-radius: var(--sc-r-md); box-shadow: var(--sc-e3); }
+  .best figcaption { margin-top: var(--sc-3); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+  .carte { list-style: none; padding: 0; margin: var(--sc-6) 0 0; columns: 2; column-gap: 2rem; }
+  .carte li { break-inside: avoid; padding: .6rem 0; border-top: 1px solid var(--sc-hairline); font-size: .98rem; }
+  .carte li b { display: block; font-weight: 500; }
+  .carte li span { color: var(--sc-ink-soft); font-size: .9rem; }
+
+  /* ----------------------------------------------------------- act three -- */
+  .act3 .col { padding-block: var(--sc-section) calc(var(--sc-section) * 1.2); }
+  .work { margin: var(--sc-7) 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-5); align-items: end; }
+  .work img { width: 100%; border-radius: var(--sc-r-md); box-shadow: var(--sc-e2); }
+  .work figcaption { font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+  .jeudi { margin-top: var(--sc-8); padding-top: var(--sc-6); border-top: 1px solid var(--sc-hairline-strong); display: grid; grid-template-columns: auto 1fr; gap: var(--sc-5); align-items: center; }
+  .jeudi .num { font-family: var(--sc-font-display); font-variation-settings: "SOFT" 100, "opsz" 144; font-weight: 600; font-size: clamp(4rem, 8vw, 7rem); line-height: .85; letter-spacing: -.04em; color: var(--orange-day); }
+  .jeudi .num small { display: block; font-family: var(--sc-font-text); font-size: .9rem; letter-spacing: .2em; font-weight: 500; margin-top: .6rem; }
+  .jeudi p { margin: 0; }
+  .room { margin: var(--sc-7) 0 0; }
+  .room img { width: 100%; border-radius: var(--sc-r-md); box-shadow: var(--sc-e3); }
+  .room figcaption { margin-top: var(--sc-3); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+
+  /* ---------------------------------------------------------- the lamps (peak) -- */
+  .lamps .sc-stage { background: var(--night); }
+  .lamps__side { position: absolute; inset: 0; overflow: clip; }
+  .lamps__side--day   { clip-path: inset(0 calc(100% - var(--split) * 1%) 0 0); }
+  .lamps__side--night { clip-path: inset(0 0 0 calc(var(--split) * 1%)); }
+  .lamps__side img { position: absolute; max-width: none; object-fit: cover; }
+  .lamps__side--day img { inset: 0 auto 0 0; height: 100%; object-position: 50% 60%; width: 56vw; }
+  .lamps__dusk { position: absolute; inset: 0; background: linear-gradient(180deg, #23384a, #0f1d28);
+    mix-blend-mode: multiply; opacity: var(--dusk, 0); }
+  .lamps__frame { position: absolute; top: 0; bottom: 0; right: 0; width: 70vw; }
+  .lamps__frame img { inset: 0; width: 100%; height: 100%; object-position: 62% 55%; }
+  .lamps__on { --a: 0; --b: 0; --c: 0; --d: 0; --all: 0;
+    -webkit-mask-image:
+      radial-gradient(circle at 29% 46%, #000 calc(var(--a) * 7vmax), transparent calc(var(--a) * 17vmax)),
+      radial-gradient(circle at 41% 47%, #000 calc(var(--b) * 7vmax), transparent calc(var(--b) * 17vmax)),
+      radial-gradient(circle at 51% 52%, #000 calc(var(--c) * 9vmax), transparent calc(var(--c) * 22vmax)),
+      radial-gradient(circle at 82% 62%, #000 calc(var(--d) * 14vmax), transparent calc(var(--d) * 34vmax)),
+      linear-gradient(rgb(0 0 0 / var(--all)), rgb(0 0 0 / var(--all)));
+            mask-image:
+      radial-gradient(circle at 29% 46%, #000 calc(var(--a) * 7vmax), transparent calc(var(--a) * 17vmax)),
+      radial-gradient(circle at 41% 47%, #000 calc(var(--b) * 7vmax), transparent calc(var(--b) * 17vmax)),
+      radial-gradient(circle at 51% 52%, #000 calc(var(--c) * 9vmax), transparent calc(var(--c) * 22vmax)),
+      radial-gradient(circle at 82% 62%, #000 calc(var(--d) * 14vmax), transparent calc(var(--d) * 34vmax)),
+      linear-gradient(rgb(0 0 0 / var(--all)), rgb(0 0 0 / var(--all))); }
+  .lamps__copy { position: absolute; z-index: 4; max-width: 26rem; }
+  .lamps__copy--day { top: clamp(5rem, 14vh, 8rem); left: var(--sc-gutter); color: var(--day-ink); }
+  .lamps__copy--day .sc-display { color: var(--day-ink); }
+  .lamps__copy--night { bottom: clamp(6rem, 15vh, 9rem); left: 45vw; max-width: 30rem; }
+  .lamps__copy .sc-display { font-size: var(--sc-t-3xl); }
+  .lamps__copy p { margin-top: var(--sc-4); font-size: var(--sc-t-lg); line-height: 1.4; }
+  .lamps__scrim-day { position: absolute; inset: 0 auto 0 0; width: 60vw; background: linear-gradient(180deg, rgb(227 235 234 / .95), rgb(227 235 234 / .86) 46%, rgb(227 235 234 / .5) 62%, transparent 78%); opacity: var(--dayscrim, 1); }
+  .lamps__scrim-night { position: absolute; inset: auto 0 0 0; height: 72%; background: linear-gradient(0deg, rgb(10 18 22 / .94), rgb(10 18 22 / .84) 42%, rgb(10 18 22 / .45) 66%, transparent); }
+
+  /* ------------------------------------------------------------- act five -- */
+  .quote { margin: 0; }
+  .quote blockquote { margin: 0; font-family: var(--sc-font-display); font-variation-settings: "SOFT" 100; font-weight: 420; font-style: italic; font-size: clamp(1.35rem, 1.1rem + .9vw, 1.9rem); line-height: 1.3; letter-spacing: -.01em; }
+  .quote figcaption { margin-top: var(--sc-5); font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+  .quote figcaption b { color: var(--sc-ink); font-weight: 500; display: block; }
+  .stars { color: var(--orange-day); letter-spacing: .15em; }
+  .scores { margin-top: var(--sc-6); display: grid; gap: .5rem; font-size: var(--sc-t-sm); }
+  .scores div { display: flex; justify-content: space-between; border-top: 1px solid var(--sc-hairline); padding-top: .5rem; }
+  .table-soir { display: grid; grid-template-columns: 1.15fr 1fr; grid-template-rows: auto auto; gap: var(--sc-6) var(--sc-6); margin-top: var(--sc-7); }
+  .plate { margin: 0; }
+  .plate img { width: 100%; border-radius: var(--sc-r-md); box-shadow: var(--sc-e2); aspect-ratio: 4 / 5; object-fit: cover; }
+  .plate--wide { grid-column: 1 / -1; }
+  .plate--wide img { aspect-ratio: 16 / 9; }
+  .plate figcaption { margin-top: var(--sc-3); display: grid; gap: .1rem; }
+  .plate figcaption b { font-family: var(--sc-font-display); font-variation-settings: "SOFT" 100; font-weight: 560; font-size: 1.25rem; }
+  .plate figcaption span { color: var(--sc-ink-soft); font-size: .94rem; }
+  .plate--tall { grid-row: span 1; }
+
+  /* ---------------------------------------------------------------- close -- */
+  .close__stage { position: relative; min-height: 100vh; min-height: 100svh; background: var(--night); overflow: clip;
+    display: flex; justify-content: flex-end; align-items: center; padding-inline: var(--sc-gutter); }
+  .close__side { position: absolute; inset: 0; overflow: clip; }
+  .close__side--day   { clip-path: inset(0 calc(100% - var(--split) * 1%) 0 0); }
+  .close__side--night { clip-path: inset(0 0 0 calc(var(--split) * 1%)); }
+  .close__side img { position: absolute; top: 0; height: 100%; width: 52vw; object-fit: cover; max-width: none; }
+  .close__side--day img { left: 0; object-position: 40% 50%; }
+  .close__side--night img { left: 0; object-position: 50% 30%; }
+  .close__side::after { content: ""; position: absolute; inset: 0; }
+  .close__side--day::after { background: linear-gradient(90deg, transparent 30vw, var(--day) 52vw); }
+  .close__side--night::after { background: linear-gradient(90deg, transparent 30vw, var(--night) 52vw); }
+  .close__side--day { background: var(--day); }
+  .close__side--night { background: var(--night); }
+  .resa { position: relative; z-index: 5; width: min(44rem, 50vw);
+    display: flex; flex-direction: column; gap: var(--sc-5); padding-block: 5rem 7.5rem;
+    transition: color var(--sc-d-slow) var(--sc-ease-out); }
+  .resa .sc-display { font-size: var(--sc-t-2xl); }
+  .resa__row { display: grid; grid-template-columns: auto 1fr; gap: var(--sc-6); align-items: center; }
+  .dial { position: relative; width: clamp(10rem, 15vw, 13rem); aspect-ratio: 1; touch-action: none; cursor: grab; border-radius: 50%; }
+  .dial:active { cursor: grabbing; }
+  .dial svg { width: 100%; height: 100%; overflow: visible; }
+  .dial .tick { stroke: currentColor; stroke-width: 1.4; opacity: .5; }
+  .dial .tick--big { stroke-width: 2.4; opacity: .9; }
+  .dial text { font-family: var(--sc-font-text); font-size: 7.5px; fill: currentColor; opacity: .75; text-anchor: middle; dominant-baseline: middle; }
+  .dial:focus-visible { outline-offset: 6px; border-radius: 50%; }
+  .readout { display: grid; gap: .3rem; }
+  .readout__time { font-family: var(--sc-font-display); font-variation-settings: "SOFT" 100, "opsz" 144; font-weight: 600; font-size: clamp(3rem, 5vw, 4.6rem); line-height: .9; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+  .readout__side { font-size: var(--sc-t-sm); letter-spacing: .14em; text-transform: uppercase; font-weight: 500; color: var(--sc-accent); }
+  .readout__nudge { display: flex; gap: .5rem; margin-top: .4rem; }
+  .chipset { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .45rem; }
+  .chipset legend { font-size: var(--sc-t-xs); letter-spacing: .16em; text-transform: uppercase; font-weight: 500; color: var(--sc-ink-soft); margin-bottom: .55rem; padding: 0; }
+  .chip { position: relative; }
+  .chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .chip span, .nudge { display: inline-flex; align-items: center; justify-content: center; min-height: 2.6rem; min-width: 2.6rem; padding: 0 .95rem; border-radius: 999px;
+    border: 1px solid var(--sc-hairline-strong); font-size: .95rem; font-weight: 450; background: transparent;
+    transition: background-color var(--sc-d-fast) var(--sc-ease-out), color var(--sc-d-fast) var(--sc-ease-out), border-color var(--sc-d-fast) var(--sc-ease-out), transform 120ms var(--sc-ease-out); }
+  .nudge { cursor: pointer; color: inherit; min-height: 2.3rem; font-size: .85rem; }
+  .chip input:checked + span { background: var(--sc-ink); color: var(--sc-canvas); border-color: var(--sc-ink); }
+  .chip input:focus-visible + span { outline: 2px solid var(--sc-accent); outline-offset: 3px; }
+  @media (hover: hover) and (pointer: fine) { .chip:hover span, .nudge:hover { border-color: var(--sc-ink); } }
+  .chip input:active + span, .nudge:active { transform: scale(.97); }
+  .cta { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.4rem; padding: 0 2rem; border-radius: 999px; border: 0; cursor: pointer;
+    background: var(--orange); color: #13232A; font-weight: 600; font-size: 1.05rem; text-decoration: none; white-space: nowrap; box-shadow: var(--sc-e2);
+    transition: transform 120ms var(--sc-ease-out), background-color var(--sc-d-fast) var(--sc-ease-out); justify-self: start; }
+  @media (hover: hover) and (pointer: fine) { .cta:hover { background: #F59B55; } }
+  .cta:active { transform: scale(.97); }
+  .resa { --err: #FFA27A; }
+  .close[data-win="day"] .resa { --err: #A3300F; }
+  .resa__note { font-size: var(--sc-t-sm); color: var(--sc-ink-soft); margin: 0; max-width: 34rem; }
+  .resa__note a { color: var(--sc-ink); }
+  .resa__pair { display: grid; grid-template-columns: auto minmax(12rem, 1fr); gap: var(--sc-5) var(--sc-7); align-items: end; }
+  .field { display: grid; gap: .5rem; min-width: 0; }
+  .field label { font-size: var(--sc-t-xs); letter-spacing: .16em; text-transform: uppercase; font-weight: 500; color: var(--sc-ink-soft); }
+  .field input { width: 100%; min-height: 2.75rem; padding: .35rem .1rem; font-size: 1rem; color: inherit; background: transparent;
+    border: 0; border-bottom: 1px solid var(--sc-hairline-strong); border-radius: 0;
+    transition: border-color var(--sc-d-fast) var(--sc-ease-out); }
+  .field input::placeholder { color: var(--sc-ink-soft); opacity: .8; }
+  @media (hover: hover) and (pointer: fine) { .field input:hover { border-bottom-color: var(--sc-ink); } }
+  .field input:focus-visible { outline: none; border-bottom: 2px solid var(--sc-accent); }
+  .field input[aria-invalid="true"] { border-bottom: 2px solid var(--err); }
+  .chipset legend small { text-transform: none; letter-spacing: 0; font-size: .95em; font-weight: 400; margin-left: .3rem; }
+  .field--extra { flex-basis: 100%; margin-top: .35rem; }
+  .resa__error { margin: 0; font-size: var(--sc-t-sm); color: var(--err); font-weight: 500; }
+  .resa__send { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sc-4) var(--sc-5); }
+  .foot { position: absolute; z-index: 6; left: var(--sc-gutter); right: var(--sc-gutter); bottom: 1rem;
+    display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; font-size: .82rem; color: var(--sc-ink-soft); }
+  @media (min-width: 821px) { .foot { left: auto; right: var(--sc-gutter); width: min(40rem, 46vw); } }
+  .foot a { color: inherit; }
+  .foot a:hover { color: var(--sc-ink); }
+  .close[data-win="day"] .resa, .close[data-win="day"] .foot { --sc-ink: var(--day-ink); --sc-ink-soft: var(--day-soft); --sc-canvas: var(--day); --sc-accent: var(--orange-day);
+    --sc-hairline: color-mix(in oklab, var(--day-ink) 14%, transparent); --sc-hairline-strong: color-mix(in oklab, var(--day-ink) 26%, transparent); color: var(--day-ink); }
+  .close[data-win="night"] .resa, .close[data-win="night"] .foot { --sc-ink: var(--night-ink); --sc-ink-soft: var(--night-soft); --sc-canvas: var(--night); --sc-accent: var(--orange); color: var(--night-ink); }
+  .close__wordmark { position: absolute; z-index: 6; left: var(--sc-gutter); top: 1.4rem; width: 9rem; }
+
+  .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* --------------------------------------------------------------- phone --
+     The divider turns into a slim top bar that is itself a split: day on the
+     left of the boundary, night on the right, the pan-clock riding the seam.
+     Acts stack their two columns; the hero, the lamps and the close split
+     top/bottom instead of left/right. */
+  @media (max-width: 820px) {
+    :root { --mid: var(--sc-gutter); }
+    .divider { inset: 0 0 auto 0; height: 3.25rem; }
+    .divider__bar { position: absolute; inset: 0; background: linear-gradient(90deg, var(--day) 0 var(--split-px, 50vw), var(--night) var(--split-px, 50vw) 100%);
+      box-shadow: 0 1px 0 color-mix(in oklab, var(--orange) 50%, transparent); }
+    .divider__line { display: none; }
+    .divider__labels { inset: 0; transform: none; height: 3.25rem; }
+    .divider__labels .l-day { left: var(--sc-gutter); right: auto; }
+    .divider__labels .l-night { right: var(--sc-gutter); left: auto; }
+    .divider__clock { top: .25rem; bottom: auto; grid-auto-flow: column; align-items: center; }
+    .divider__clock svg { width: 2.75rem; height: 2.75rem; }
+    .divider__time { position: absolute; top: 3.2rem; }
+
+    .pair, .pair--after { grid-template-columns: 1fr; }
+    .pair > .col.is-day, .pair > .col.is-night { padding-inline: var(--sc-gutter); }
+    .col.is-day .col__inner { margin-left: 0; }
+    .carte { columns: 1; }
+
+    .hero .sc-stage { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+    .hero__wordmark { top: 4rem; width: 7.5rem; }
+    .hero__copy { top: auto; bottom: 1.4rem; max-width: 19rem; }
+    .half--day .hero__copy { left: var(--sc-gutter); right: auto; text-align: left; }
+    .half--day .hero__sub { margin-left: 0; }
+    .half--night .hero__copy { left: var(--sc-gutter); }
+    .hero h1 .part { font-size: var(--sc-t-2xl); }
+    .hero__sub { font-size: var(--sc-t-base); }
+    .hero__beat { margin-top: var(--sc-3); }
+    .half--day .atmo { background: linear-gradient(to top, rgb(227 235 234 / .95) 0%, rgb(227 235 234 / .6) 40%, rgb(227 235 234 / 0) 70%); }
+    .half--night .atmo { background: linear-gradient(to top, rgb(14 26 31 / .95) 0%, rgb(14 26 31 / .55) 45%, rgb(14 26 31 / 0) 75%); }
+    .half--day .plane--plate { width: 52vw; left: auto; right: -5vw; bottom: auto; top: 3.6rem; }
+    .half--night .plane--plate { width: 44vw; right: -6vw; bottom: auto; top: 1.2rem; }
+    .hero__copy { max-width: 21rem; }
+
+    .lamps__side--day   { clip-path: inset(0 0 calc(100% - var(--split) * 1%) 0); }
+    .lamps__side--night { clip-path: inset(calc(var(--split) * 1%) 0 0 0); }
+    .lamps__side--day img { width: 100%; height: 56svh; }
+    .lamps__frame { inset: 0; width: 100%; }
+    .lamps__copy--day { top: 4.6rem; left: var(--sc-gutter); right: var(--sc-gutter); }
+    .lamps__copy--night { bottom: 2.4rem; left: var(--sc-gutter); right: var(--sc-gutter); text-align: left; }
+    .lamps__copy .sc-display { font-size: var(--sc-t-2xl); }
+    .lamps__copy p { font-size: var(--sc-t-base); }
+    .lamps__scrim-day { width: 100%; }
+
+    .table-soir { grid-template-columns: 1fr 1fr; gap: var(--sc-5) var(--sc-4); }
+
+    /* the close can be taller than the screen, so its seam is measured in screens, not in % of itself */
+    .close__side--day   { clip-path: inset(0 0 calc(100% - var(--split) * 1svh) 0); }
+    .close__side--night { clip-path: inset(calc(var(--split) * 1svh) 0 0 0); }
+    .close__side img { width: 100%; height: 26svh; }
+    .close__side--day::after { background: linear-gradient(180deg, transparent 12svh, var(--day) 26svh); }
+    .close__side--night::after { background: linear-gradient(180deg, transparent 12svh, var(--night) 26svh); }
+    .close__wordmark { display: none; }
+    .close__stage { display: block; padding-top: 24svh; }
+    .resa { width: auto; gap: var(--sc-4); padding-block: 0 6.2rem; }
+    .resa__pair { grid-template-columns: 1fr; gap: var(--sc-4); }
+    .resa__row { grid-template-columns: auto 1fr; gap: var(--sc-4); }
+    .dial { width: 7.6rem; }
+    .readout__time { font-size: 2.6rem; }
+    .resa .sc-display { font-size: var(--sc-t-xl); }
+    .chip span { min-height: 2.5rem; min-width: 2.5rem; padding: 0 .75rem; font-size: .9rem; }
+    .resa__note { font-size: .8rem; }
+    .foot { bottom: .6rem; font-size: .74rem; gap: .2rem 1rem; }
+  }
+  @media (max-width: 820px) and (max-height: 720px) {
+    .half--day .plane--plate { width: 40vw; top: 3.3rem; }
+    .half--night .plane--plate { width: 34vw; top: .6rem; }
+    .hero__sub { font-size: .92rem; line-height: 1.45; }
+    .close__side img { height: 15svh; }
+    .close__side--day::after { background: linear-gradient(180deg, transparent 6svh, var(--day) 15svh); }
+    .close__side--night::after { background: linear-gradient(180deg, transparent 6svh, var(--night) 15svh); }
+    .close__stage { padding-top: 5.8rem; }
+    .resa { gap: .8rem; }
+    .resa__note { display: none; }
+    .dial { width: 6rem; }
+    .readout__time { font-size: 2.2rem; }
+    .readout__nudge { margin-top: .1rem; }
+    .chip span { min-height: 2.35rem; min-width: 2.35rem; }
+    .resa .sc-display { font-size: 1.3rem; }
+    .cta { min-height: 3rem; }
+  }
+  @media (max-width: 380px) {
+    .resa .sc-display { font-size: 1.4rem; }
+    .dial { width: 6.4rem; }
+    .chipset legend { margin-bottom: .3rem; }
+  }
+
+  /* Reduced motion keeps the meaning (both sides, lamps lit, the dial) and drops
+     the travel. Pinned acts give their extra scroll back. */
+  @media (prefers-reduced-motion: reduce) {
+    .plane { transform: none !important; }
+    .hero.sc-act--pinned, .lamps.sc-act--pinned { height: 100vh !important; height: 100svh !important; }
+    .lamps__on { --all: 1 !important; }
+    .lamps__dusk { opacity: .55 !important; }
+    .lamps__copy { opacity: 1 !important; transform: none !important; }
+  }
+  @media (prefers-reduced-motion: reduce) and (min-width: 821px) { .lamps__copy--night { left: calc(50vw + var(--mid)); } }
+</style>
+</head>
+<body>
+
+<a class="visually-hidden" href="#reserver">Aller à la réservation</a>
+
+<!-- The chrome: a hairline at the split, two side labels, the pan-clock. -->
+<nav class="divider" aria-label="Navigation">
+  <div class="divider__bar" aria-hidden="true"></div>
+  <div class="divider__line" aria-hidden="true"></div>
+  <div class="divider__labels">
+    <a class="l-day" href="#cantine">Cantine</a>
+    <a class="l-night" href="#bistrot">Bistrot</a>
+  </div>
+  <a class="divider__clock" href="#reserver">
+    <svg viewBox="0 0 100 100" aria-hidden="true" class="pan" data-pan>
+      <circle class="pan__disc" cx="50" cy="50" r="48"/>
+      <g data-hand><line class="pan__handle" x1="50" y1="31" x2="50" y2="14"/><circle cx="50" cy="17.5" r="1.7" fill="var(--orange)"/></g>
+      <circle class="pan__ring" cx="50" cy="54" r="19"/>
+      <polyline class="pan__hat" data-hat points="40,23 50,16 60,23"/>
+    </svg>
+    <span class="divider__time" data-time>12:00</span>
+    <span class="sr">Réserver</span>
+  </a>
+</nav>
+
+<main id="top">
+
+  <!-- 1 · CURIOSITY. One place, two faces. Pinned only long enough for the
+       plates to come forward and the second beat (the hours) to land. -->
+  <section class="hero" data-sc-act="pin" data-sc-span="1.6" data-hour-in="12" data-hour-out="12.5">
+    <div data-sc-stage>
+      <div class="half half--day is-day" data-lean>
+        <div class="plane plane--bg" data-depth="0.35"><img src="assets/hero-day.webp" width="1100" height="1347" alt="La banquette près de la fenêtre, coussins rayés et carrelage bleu, en plein midi."></div>
+        <div class="atmo" aria-hidden="true"></div>
+        <img class="plane plane--plate" data-depth="1" src="assets/hero-day-plate.webp" width="744" height="465" alt="Le Raclette : charcuterie, raclette fondante et oignons caramélisés dans un pain croustillant, avec des frites.">
+        <img class="hero__wordmark" src="assets/wordmark-black.png" width="846" height="176" alt="Le Petit Détour">
+        <div class="hero__copy">
+          <h1><span class="visually-hidden">Le Petit Détour, Tanger. </span><span class="part sc-display">Cantine à&nbsp;midi,</span></h1>
+          <p class="hero__sub">Sandwichs au pain croustillant, frites maison et la table près de la fenêtre.</p>
+          <p class="hero__beat" data-sc-cue="0.35 1 0.25 0.05">Dès 12h · Rue de Hollande</p>
+        </div>
+      </div>
+      <div class="half half--night is-night" data-lean>
+        <div class="plane plane--bg" data-depth="0.35"><img src="assets/hero-night.webp" width="1100" height="1467" alt="L'arche en chêne éclairée et sa lampe ronde, la salle en début de soirée."></div>
+        <div class="atmo" aria-hidden="true"></div>
+        <img class="plane plane--plate" data-depth="1" src="assets/hero-night-plate.webp" width="900" height="926" alt="Le pain perdu caramélisé, deux boules de glace vanille et crème anglaise, tendu à la main.">
+        <div class="hero__copy">
+          <p class="sc-display hero__night-title" data-h1-part>bistrot le&nbsp;soir.</p>
+          <p class="hero__sub">Lampes allumées, assiettes à partager, et l'envie de rester pour le dessert.</p>
+          <p class="hero__beat" data-sc-cue="0.35 1 0.25 0.05">Jusqu'à minuit · Tanger</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · APPETITE. Real prices on the left, the best-seller held out on the right. -->
+  <section class="pair act2" data-sc-act="flow" data-hour-in="12.5">
+    <div class="col is-day" id="cantine">
+      <div class="col__inner sc-stack" data-sc-in data-sc-stagger="60">
+        <p class="kicker">La série sandwichs</p>
+        <h2 class="sc-display sc-display--md">Un sandwich, une&nbsp;histoire.</h2>
+        <p class="sc-body">Du pain bien croustillant, des garnitures généreuses, et nos frites pour compléter le tout.</p>
+        <ul class="menu" aria-label="Sandwichs et prix">
+          <li><b>Le Raclette</b><small>Charcuterie premium, raclette fondante, oignons caramélisés</small><span class="price">90<span>MAD</span></span></li>
+          <li><b>Le Forestier</b><small>Bœuf haché, champignons, sauce forestière, roquette</small><span class="price">80<span>MAD</span></span></li>
+          <li><b>L'Américain</b><small>Viande hachée, cheddar, crudités</small><span class="price">75<span>MAD</span></span></li>
+          <li><b>Le César</b><small>Poulet crispy, parmesan, sauce César</small><span class="price">70<span>MAD</span></span></li>
+          <li><b>Le Chicken</b><small>Émincés de poulet, cheddar, mayo maison</small><span class="price">65<span>MAD</span></span></li>
+          <li><b>Le Méditerranéen</b><small>Thon, fromage frais, mayo maison</small><span class="price">55<span>MAD</span></span></li>
+        </ul>
+      </div>
+      <div class="col__inner duo-img">
+        <figure class="a" data-sc-reveal="up" data-sc-reveal-at="0.12 0.42"><img src="assets/forestier.webp" width="900" height="1175" alt="Le Forestier en gros plan : bœuf haché, sauce forestière et roquette dans un pain toasté, frites à côté." loading="lazy"></figure>
+        <figure class="b" data-sc-reveal="left" data-sc-reveal-at="0.22 0.5"><img src="assets/sandwichs.webp" width="900" height="1175" alt="Quatre sandwichs de la série servis avec leurs frites sur des assiettes bleues." loading="lazy"></figure>
+      </div>
+    </div>
+    <div class="col is-night" id="bistrot">
+      <div class="col__inner sc-stack" data-sc-in data-sc-stagger="60">
+        <p class="kicker">Notre best-seller</p>
+        <h2 class="sc-display sc-display--md">Croustillant dehors, fondant&nbsp;dedans.</h2>
+        <p class="sc-body">L'escalope panée, ses pâtes crémeuses et une touche de citron. Le genre d'assiette qui parle d'elle-même.</p>
+      </div>
+      <figure class="col__inner best" data-sc-reveal="up" data-sc-reveal-at="0.1 0.38">
+        <img src="assets/escalope.webp" width="804" height="1082" alt="L'escalope panée et ses pâtes crémeuses, nappées à la cuillère devant les plantes de la terrasse." loading="lazy">
+      </figure>
+      <div class="col__inner" data-sc-in>
+        <ul class="carte" aria-label="À la carte le soir">
+          <li><b>Filet de bœuf</b><span>Sauce champignons, romarin</span></li>
+          <li><b>Saumon rôti</b><span>Linguine, crème</span></li>
+          <li><b>Gambas al ajillo</b><span>Ail, huile d'olive</span></li>
+          <li><b>Croquettes</b><span>Tomate confite, basilic</span></li>
+          <li><b>Guacamole au mortier</b><span>Avec ses garnitures à côté</span></li>
+          <li><b>Pain perdu</b><span>Glace vanille, crème anglaise</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · EASE. The afternoon: the window seat, Thursday's deal; opposite, the
+       room getting cosier. Deliberately the quietest act: the peak needs it. -->
+  <section class="pair act3" data-sc-act="flow" data-hour-in="14.5">
+    <div class="col is-day">
+      <div class="col__inner sc-stack" data-sc-in data-sc-stagger="60">
+        <h2 class="sc-display sc-display--md">Le midi qui déborde sur l'après-midi.</h2>
+        <p class="sc-body">On vient pour un sandwich, on reste pour un café. Baptiste, lui, est venu poser son bureau chez nous.</p>
+      </div>
+      <figure class="col__inner work" data-sc-in>
+        <figcaption>Une table, la lumière de la rue de Hollande, et personne pour vous presser.</figcaption>
+        <img src="assets/baptiste.webp" width="541" height="1341" alt="Un client travaille sur son ordinateur portable sur la banquette, en début d'après-midi." loading="lazy">
+      </figure>
+      <div class="col__inner jeudi" data-sc-in>
+        <p class="num">100<small>MAD</small></p>
+        <div class="sc-stack">
+          <p class="kicker">Tous les jeudis · Offre étudiante</p>
+          <p>Un sandwich au choix, des frites, une boisson et un dessert.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col is-night">
+      <div class="col__inner sc-stack" data-sc-in data-sc-stagger="60">
+        <h2 class="sc-display sc-display--md">Le genre d'endroit qu'on ne veut plus&nbsp;quitter.</h2>
+        <p class="sc-body">Banquettes, coussins rayés, chaises en bouclé. On s'installe pour dîner, on finit par commander le dessert.</p>
+      </div>
+      <figure class="col__inner room" data-sc-reveal="right" data-sc-reveal-at="0.16 0.46">
+        <img src="assets/salle-soir.webp" width="1300" height="842" alt="La salle du soir : longue banquette, coussins rayés orange et bleu, petites lampes allumées sur chaque table." loading="lazy">
+        <figcaption>Rue de Hollande, côté salle.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 4 · HELD BREATH (the peak). The day side dims with nothing new to read
+       (authored silence, p 0 to 0.15), the clock crosses 19h, the lamps come on
+       one by one and the bistrot takes most of the screen. -->
+  <section class="lamps" data-sc-act="pin" data-sc-span="3.2" data-hour-in="17" data-hour-out="19.5" aria-label="Les lampes s'allument">
+    <div data-sc-stage>
+      <div class="lamps__side lamps__side--day" aria-hidden="true">
+        <img src="assets/peak-day.webp" width="1000" height="1446" alt="">
+        <div class="lamps__dusk"></div>
+        <div class="lamps__scrim-day"></div>
+      </div>
+      <div class="lamps__side lamps__side--night">
+        <div class="lamps__frame">
+          <img class="lamps__off" src="assets/peak-night-off.webp" width="1100" height="1424" alt="" aria-hidden="true">
+          <img class="lamps__on" src="assets/peak-night-on.webp" width="1100" height="1424" alt="Une rangée de tables dressées, chacune avec sa lampe orange allumée.">
+        </div>
+        <div class="lamps__scrim-night" aria-hidden="true"></div>
+      </div>
+      <div class="lamps__copy lamps__copy--day" data-sc-cue="0 0.36 0 0.12">
+        <p class="kicker" style="color:var(--day-soft)">17h</p>
+        <h2 class="sc-display">On range les ordinateurs, on garde la&nbsp;table.</h2>
+      </div>
+      <div class="lamps__copy lamps__copy--night" data-sc-cue="0.56 1 0.16 0.04">
+        <p class="kicker" style="color:var(--orange)">19h30</p>
+        <h2 class="sc-display" data-sc-kinetic="lines">Les lampes s'allument.</h2>
+        <p style="color:var(--night-ink)">La cantine devient bistrot. Même salle, autre lumière.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · TRUST. A real guest's words in the narrow day column; the evening plates wide. -->
+  <section class="pair pair--after act5" data-sc-act="flow" data-hour-in="19.5">
+    <div class="col is-day">
+      <figure class="col__inner quote" data-sc-in>
+        <p class="kicker" style="margin-bottom:var(--sc-5)">Ce qu'on dit de nous</p>
+        <blockquote lang="en">“Calm, cosy and genuinely welcoming. Everything we ordered was spot on, and nobody rushed us.”</blockquote>
+        <figcaption><b>Sofia L.</b><span class="stars" aria-label="5 étoiles sur 5">★★★★★</span> · avis Google</figcaption>
+        <div class="scores">
+          <div><span>Cuisine</span><span>5/5</span></div>
+          <div><span>Service</span><span>5/5</span></div>
+          <div><span>Ambiance</span><span>5/5</span></div>
+        </div>
+      </figure>
+    </div>
+    <div class="col is-night">
+      <div class="col__inner sc-stack" data-sc-in data-sc-stagger="60" style="max-width:44rem">
+        <h2 class="sc-display sc-display--md">Ce soir, on&nbsp;partage.</h2>
+        <p class="sc-body">Des assiettes posées au milieu de la table, et tout le monde pioche.</p>
+      </div>
+      <div class="col__inner table-soir" style="max-width:52rem">
+        <figure class="plate plate--wide" data-sc-reveal="up" data-sc-reveal-at="0.08 0.34"><img src="assets/guacamole.webp" width="900" height="1147" alt="Le guacamole servi dans un mortier en granit, entouré de ses garnitures et de chips de maïs." loading="lazy" style="object-position:50% 58%"><figcaption><b>Guacamole au mortier</b><span>Avocat, tomate, oignon rouge, coriandre, citron vert, chips.</span></figcaption></figure>
+        <figure class="plate" data-sc-in><img src="assets/gambas.webp" width="900" height="910" alt="Gambas al ajillo dans leur poêlon, croquettes et citronnade autour." loading="lazy"><figcaption><b>Gambas al ajillo</b><span>Ail, piment doux, huile d'olive.</span></figcaption></figure>
+        <figure class="plate" data-sc-in><img src="assets/filet.webp" width="900" height="1175" alt="Deux médaillons de filet de bœuf, sauce aux champignons et romarin, sur une assiette bleue." loading="lazy"><figcaption><b>Filet de bœuf</b><span>Sauce champignons, romarin frais.</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · RESOLVE. The collapse. The visitor turns the pan handle to their hour;
+       before 17h the cantine takes the screen, after it the bistrot does. It
+       flows at its natural height (at least one screen) so the longer form
+       always fits; the footer lives inside it, so the page ends on this frame. -->
+  <section class="close" id="reserver" data-sc-act="flow" data-hour-in="20.5" data-win="night" aria-labelledby="resa-title">
+    <div class="close__stage">
+      <div class="close__side close__side--day" aria-hidden="true"><img src="assets/close-day.webp" width="1268" height="909" alt=""></div>
+      <div class="close__side close__side--night" aria-hidden="true"><img src="assets/close-night.webp" width="900" height="756" alt=""></div>
+
+      <form class="resa" data-resa novalidate>
+        <h2 class="sc-display" id="resa-title" data-sc-cue="0.02">À quelle heure, votre table&nbsp;?</h2>
+        <div class="resa__row" data-sc-cue="0.02">
+          <div class="dial" data-dial role="slider" tabindex="0" aria-label="Heure de la réservation" aria-valuemin="12" aria-valuemax="23" aria-valuenow="20.5" aria-valuetext="20h30">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <g data-ticks></g>
+              <circle class="pan__disc" cx="50" cy="50" r="30"/>
+              <circle class="pan__ring" cx="50" cy="52" r="12" style="stroke-width:4.5"/>
+              <polyline class="pan__hat" data-hat points="44,33 50,28.5 56,33" style="stroke-width:3.6"/>
+              <g data-hand><line class="pan__handle" x1="50" y1="38" x2="50" y2="9" style="stroke-width:5"/><circle cx="50" cy="12.6" r="1.25" fill="var(--orange)"/></g>
+            </svg>
+          </div>
+          <div class="readout">
+            <span class="readout__time" data-readout>20:30</span>
+            <span class="readout__side" data-side>Côté bistrot</span>
+            <div class="readout__nudge">
+              <button type="button" class="nudge" data-nudge="-0.5" aria-label="30 minutes plus tôt">−30 min</button>
+              <button type="button" class="nudge" data-nudge="0.5" aria-label="30 minutes plus tard">+30 min</button>
+            </div>
+          </div>
+        </div>
+        <fieldset class="chipset" data-sc-cue="0.02">
+          <legend>Jour</legend>
+          <div class="chipset" data-days></div>
+        </fieldset>
+        <div class="resa__pair" data-sc-cue="0.02">
+        <fieldset class="chipset">
+          <legend>Personnes</legend>
+          <label class="chip"><input type="radio" name="n" value="1"><span>1</span></label>
+          <label class="chip"><input type="radio" name="n" value="2" checked><span>2</span></label>
+          <label class="chip"><input type="radio" name="n" value="3"><span>3</span></label>
+          <label class="chip"><input type="radio" name="n" value="4"><span>4</span></label>
+          <label class="chip"><input type="radio" name="n" value="5"><span>5</span></label>
+          <label class="chip"><input type="radio" name="n" value="6+"><span>6+</span></label>
+        </fieldset>
+        <div class="field">
+          <label for="resa-name">Votre prénom</label>
+          <input id="resa-name" name="prenom" type="text" autocomplete="given-name" autocapitalize="words" maxlength="40" required aria-describedby="resa-error">
+        </div>
+        </div>
+        <fieldset class="chipset" data-sc-cue="0.02">
+          <legend>Allergies ou régime <small>(facultatif)</small></legend>
+          <label class="chip"><input type="checkbox" name="allergie" value="gluten"><span>Gluten</span></label>
+          <label class="chip"><input type="checkbox" name="allergie" value="lactose"><span>Lactose</span></label>
+          <label class="chip"><input type="checkbox" name="allergie" value="fruits à coque"><span>Fruits à coque</span></label>
+          <label class="chip"><input type="checkbox" name="allergie" value="fruits de mer"><span>Fruits de mer</span></label>
+          <label class="chip"><input type="checkbox" name="allergie" value="œufs"><span>Œufs</span></label>
+          <label class="chip"><input type="checkbox" name="allergie" value="végétarien"><span>Végétarien</span></label>
+          <div class="field field--extra">
+            <label for="resa-extra" class="visually-hidden">Autre chose à signaler</label>
+            <input id="resa-extra" name="precision" type="text" maxlength="120" placeholder="Autre chose à signaler ? Une autre allergie, un anniversaire…">
+          </div>
+        </fieldset>
+        <p class="resa__error" id="resa-error" role="alert" data-error></p>
+        <div class="resa__send" data-sc-cue="0.02">
+          <button type="submit" class="cta" data-send disabled>Réserver</button>
+          <noscript><p class="resa__note">Pour réserver, appelez le <a href="tel:+34647591229">+34 647 591 229</a>.</p></noscript>
+          <p class="resa__note">Votre demande part sur WhatsApp, l'équipe vous confirme la table. Ou appelez le <a href="tel:+34647591229">+34 647 591 229</a>.</p>
+        </div>
+      </form>
+
+      <footer class="foot">
+        <span>Le Petit Détour · Rue de Hollande, Tanger</span>
+        <span>Tous les jours, 12h à minuit</span>
+        <a href="https://www.google.com/maps/search/?api=1&query=Centre+Ville+Tanger" rel="noopener" target="_blank">Itinéraire</a>
+        <a href="tel:+34647591229">+34 647 591 229</a>
+        <a href="#" rel="noopener" target="_blank">Instagram</a>
+      </footer>
+    </div>
+  </section>
+
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>
+ScrollCraft.mount(document.body);
+
+(function () {
+  'use strict';
+  var reduce = ScrollCraft.reduce;
+  var root = document.documentElement;
+  var phone = matchMedia('(max-width: 820px)');
+  var fine = matchMedia('(hover: hover) and (pointer: fine)');
+  var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var ease = function (t) { t = clamp(t, 0, 1); return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+  var win = function (p, a, b) { return clamp((p - a) / (b - a), 0, 1); };
+
+  var hero = document.querySelector('.hero');
+  var lamps = document.querySelector('.lamps');
+  var close = document.querySelector('.close');
+  var lampsStage = lamps.querySelector('.sc-stage, [data-sc-stage]');
+  var on = lamps.querySelector('.lamps__on');
+  var dusk = lamps.querySelector('.lamps__dusk');
+  var timeEl = document.querySelector('[data-time]');
+  var hands = document.querySelectorAll('[data-hand]');
+  var hats = document.querySelectorAll('[data-hat]');
+  var labelDay = document.querySelector('.l-day'), labelNight = document.querySelector('.l-night');
+
+  /* The night half of the hero headline is a visual copy: the real <h1> holds
+     both halves for reading order, the second is placed in the night column. */
+  var h1 = hero.querySelector('h1');
+  var nightTitle = hero.querySelector('.hero__night-title');
+  h1.insertAdjacentHTML('beforeend', '<span class="visually-hidden"> bistrot le soir.</span>');
+  nightTitle.setAttribute('aria-hidden', 'true');
+  nightTitle.classList.add('part');
+  nightTitle.style.fontSize = getComputedStyle(h1.querySelector('.part')).fontSize;
+
+  /* ---- geometry: where each act starts, so the hour can be read off scroll */
+  var geo = {};
+  function measure() {
+    var y = scrollY, vh = innerHeight;
+    function box(el) { var r = el.getBoundingClientRect(); return { top: r.top + y, h: r.height }; }
+    geo.vh = vh; geo.w = root.clientWidth;
+    geo.hero = box(hero); geo.lamps = box(lamps); geo.close = box(close);
+    geo.marks = [];
+    document.querySelectorAll('[data-hour-in]').forEach(function (s) {
+      var b = box(s);
+      geo.marks.push([b.top, parseFloat(s.getAttribute('data-hour-in'))]);
+      if (s.hasAttribute('data-hour-out')) geo.marks.push([b.top + b.h - vh, parseFloat(s.getAttribute('data-hour-out'))]);
+    });
+    geo.marks.sort(function (a, b) { return a[0] - b[0]; });
+    nightTitle.style.fontSize = getComputedStyle(h1.querySelector('.part')).fontSize;
+  }
+
+  function hourAt(y) {
+    var m = geo.marks;
+    if (y <= m[0][0]) return m[0][1];
+    for (var i = 1; i < m.length; i++) {
+      if (y <= m[i][0]) return lerp(m[i - 1][1], m[i][1], (y - m[i - 1][0]) / Math.max(1, m[i][0] - m[i - 1][0]));
+    }
+    return m[m.length - 1][1];
+  }
+  function fmt(h) {
+    var hh = Math.floor(h + 1e-6), mm = Math.round((h - hh) * 60 / 5) * 5;
+    if (mm === 60) { hh++; mm = 0; }
+    return String(hh % 24).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+  }
+  function setHands(h) {
+    var deg = ((h - 12) / 12) * 360;
+    hands.forEach(function (g) { g.setAttribute('transform', 'rotate(' + deg.toFixed(2) + ' 50 ' + (g.closest('.dial') ? 50 : 54) + ')'); });
+    var off = Math.min(deg % 360, 360 - deg % 360);
+    hats.forEach(function (el) { el.style.opacity = clamp((off - 22) / 30, 0, 1).toFixed(2); });
+  }
+
+  /* ---- the reservation dial (the signature move, second half) ----------- */
+  var chosen = 20.5, touched = false;
+  var dial = document.querySelector('[data-dial]');
+  var readout = document.querySelector('[data-readout]');
+  var sideEl = document.querySelector('[data-side]');
+  var ticks = dial.querySelector('[data-ticks]');
+  (function drawTicks() {
+    var s = '';
+    for (var i = 0; i < 24; i++) {
+      var a = i / 24 * Math.PI * 2, big = i % 6 === 0;
+      var r1 = big ? 40 : 42.5, r2 = 46;
+      s += '<line class="tick' + (big ? ' tick--big' : '') + '" x1="' + (50 + Math.sin(a) * r1).toFixed(2) + '" y1="' + (50 - Math.cos(a) * r1).toFixed(2) +
+           '" x2="' + (50 + Math.sin(a) * r2).toFixed(2) + '" y2="' + (50 - Math.cos(a) * r2).toFixed(2) + '"/>';
+    }
+    [[0, '12h'], [6, '15h'], [12, '18h'], [18, '21h']].forEach(function (t) {
+      var a = t[0] / 24 * Math.PI * 2;
+      s += '<text x="' + (50 + Math.sin(a) * 53).toFixed(2) + '" y="' + (50 - Math.cos(a) * 53).toFixed(2) + '">' + t[1] + '</text>';
+    });
+    ticks.innerHTML = s;
+  })();
+
+  function side(h) { return h < 17 ? 'day' : 'night'; }
+  function setChosen(h, fromUser) {
+    chosen = clamp(Math.round(h * 2) / 2, 12, 23);
+    if (fromUser) touched = true;
+    var t = fmt(chosen).replace(':', 'h');
+    readout.textContent = fmt(chosen);
+    dial.setAttribute('aria-valuenow', chosen);
+    dial.setAttribute('aria-valuetext', t);
+    var w = side(chosen);
+    close.setAttribute('data-win', w);
+    sideEl.textContent = w === 'day' ? 'Côté cantine' : 'Côté bistrot';
+    schedule();
+  }
+  function angleHour(e) {
+    var r = dial.getBoundingClientRect();
+    var x = e.clientX - (r.left + r.width / 2), y = e.clientY - (r.top + r.height / 2);
+    var a = Math.atan2(x, -y); if (a < 0) a += Math.PI * 2;
+    var h = 12 + a / (Math.PI * 2) * 12;
+    // past 23h the dial wraps toward noon; snap to whichever end is nearer
+    if (h > 23.25) h = h > 23.75 ? 12 : 23;
+    return h;
+  }
+  var dragging = false;
+  dial.addEventListener('pointerdown', function (e) { dragging = true; setChosen(angleHour(e), true); e.preventDefault(); });
+  addEventListener('pointermove', function (e) { if (dragging) setChosen(angleHour(e), true); });
+  addEventListener('pointerup', function () { dragging = false; });
+  addEventListener('pointercancel', function () { dragging = false; });
+  dial.addEventListener('keydown', function (e) {
+    var k = e.key, d = 0;
+    if (k === 'ArrowRight' || k === 'ArrowUp') d = .5;
+    else if (k === 'ArrowLeft' || k === 'ArrowDown') d = -.5;
+    else if (k === 'PageUp') d = 2; else if (k === 'PageDown') d = -2;
+    else if (k === 'Home') { setChosen(12, true); e.preventDefault(); return; }
+    else if (k === 'End') { setChosen(23, true); e.preventDefault(); return; }
+    if (d) { setChosen(chosen + d, true); e.preventDefault(); }
+  });
+  document.querySelectorAll('[data-nudge]').forEach(function (b) {
+    b.addEventListener('click', function () { setChosen(chosen + parseFloat(b.getAttribute('data-nudge')), true); });
+  });
+
+  /* Days: today and the next five, named the way you would say them. */
+  var daysBox = document.querySelector('[data-days]');
+  var names = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+  var now = new Date(); var html = '';
+  for (var d = 0; d < 6; d++) {
+    var dt = new Date(now.getFullYear(), now.getMonth(), now.getDate() + d);
+    var label = d === 0 ? "Aujourd'hui" : d === 1 ? 'Demain' : names[dt.getDay()].replace(/^./, function (c) { return c.toUpperCase(); }) + ' ' + dt.getDate();
+    var say = d === 0 ? "aujourd'hui" : d === 1 ? 'demain' : names[dt.getDay()] + ' ' + dt.getDate();
+    html += '<label class="chip"><input type="radio" name="jour" value="' + say + '"' + (d === 0 ? ' checked' : '') + '><span>' + label + '</span></label>';
+  }
+  daysBox.innerHTML = html;
+
+  var nameIn = document.getElementById('resa-name');
+  var resaEl = document.querySelector('[data-resa]');
+  var errEl = document.querySelector('[data-error]');
+  document.querySelector('[data-send]').disabled = false;
+  nameIn.addEventListener('input', function () {
+    if (nameIn.value.trim()) { nameIn.removeAttribute('aria-invalid'); errEl.textContent = ''; }
+  });
+  document.querySelector('[data-resa]').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.currentTarget;
+    var n = (f.querySelector('input[name="n"]:checked') || {}).value || '2';
+    var jour = (f.querySelector('input[name="jour"]:checked') || {}).value || "aujourd'hui";
+    var name = nameIn.value.trim().replace(/\s+/g, ' ');
+    if (!name) {
+      nameIn.setAttribute('aria-invalid', 'true');
+      errEl.textContent = "Ajoutez votre prénom, pour que l'équipe sache à qui garder la table.";
+      nameIn.focus();
+      return;
+    }
+    var picks = Array.prototype.map.call(f.querySelectorAll('input[name="allergie"]:checked'), function (c) { return c.value; });
+    var extra = f.querySelector('#resa-extra').value.trim().replace(/\s+/g, ' ');
+    var msg = 'Bonjour Le Petit Détour ! Je suis ' + name + ', je voudrais réserver une table pour ' + n + (n === '1' ? ' personne' : ' personnes') +
+              ', ' + jour + ' à ' + fmt(chosen).replace(':', 'h') + '.';
+    if (picks.length) msg += '\nÀ signaler (allergies ou régime) : ' + picks.join(', ') + '.';
+    if (extra) msg += '\n' + extra.replace(/[.!?…]*$/, '') + '.';
+    msg += '\nMerci !';
+    window.open('https://wa.me/34647591229?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  });
+
+  /* ---- pointer lean on the hero (fine pointers only) -------------------- */
+  var mx = 0, my = 0, tx = 0, ty = 0;
+  if (!reduce) hero.addEventListener('pointermove', function (e) {
+    if (!fine.matches) return;
+    tx = (e.clientX / innerWidth - .5) * 2; ty = (e.clientY / innerHeight - .5) * 2;
+    schedule();
+  });
+  var planes = hero.querySelectorAll('[data-depth]');
+
+  /* ---- the frame ------------------------------------------------------- */
+  var queued = false;
+  function schedule() { if (!queued) { queued = true; requestAnimationFrame(frame); } }
+  function frame() {
+    queued = false;
+    var y = scrollY, vh = geo.vh;
+
+    // hero planes: bg drifts back, the plates come forward, plus the lean
+    var hp = clamp((y - geo.hero.top) / Math.max(1, geo.hero.h - vh), 0, 1);
+    mx += (tx - mx) * .08; my += (ty - my) * .08;
+    if (!reduce) planes.forEach(function (el) {
+      var k = parseFloat(el.getAttribute('data-depth'));
+      var isPlate = k > .5;
+      var ly = isPlate ? -hp * 9 : -hp * 3;
+      var sc = isPlate ? 1 + hp * .07 : 1.04 - hp * .03;
+      el.style.transform = 'translate3d(' + (mx * k * -14).toFixed(2) + 'px,calc(' + ly.toFixed(2) + '% + ' + (my * k * -10).toFixed(2) + 'px),0) scale(' + sc.toFixed(4) + ')';
+    });
+    if (Math.abs(tx - mx) > .002 || Math.abs(ty - my) > .002) schedule();
+
+    // lamps: dusk, then four lamps, then the room; the split tips to the bistrot
+    var lp = clamp((y - geo.lamps.top) / Math.max(1, geo.lamps.h - vh), 0, 1);
+    if (y < geo.lamps.top) lp = 0;
+    var L = reduce ? 1 : lp;
+    dusk.style.opacity = (ease(win(L, 0, .5)) * .78).toFixed(3);
+    lampsStage.style.setProperty('--dusk', ease(win(L, 0, .5)).toFixed(3));
+    lampsStage.style.setProperty('--dayscrim', reduce ? '1' : (1 - ease(win(L, .3, .5))).toFixed(3));
+    on.style.setProperty('--a', ease(win(L, .28, .40)).toFixed(3));
+    on.style.setProperty('--b', ease(win(L, .36, .48)).toFixed(3));
+    on.style.setProperty('--c', ease(win(L, .44, .58)).toFixed(3));
+    on.style.setProperty('--d', ease(win(L, .52, .70)).toFixed(3));
+    on.style.setProperty('--all', ease(win(L, .66, .86)).toFixed(3));
+
+    // the split, as a function of where the reader is
+    var split = 50;
+    var after = phone.matches ? 42 : 30;
+    // reduced motion holds the lamps at an even split: both sides, both lines, no travel
+    var Ls = reduce ? 0 : L;
+    if (y >= geo.lamps.top) split = lerp(50, after, ease(win(Ls, .34, .84)));
+    if (y >= geo.lamps.top + geo.lamps.h - vh) split = after;
+    // the collapse: the close slides in, then the chosen side takes the screen
+    var ce = clamp(1 - (geo.close.top - y) / vh, 0, 1);
+    var target = side(chosen) === 'day' ? 100 : 0;
+    var cs = phone.matches ? lerp(after, target, ease(win(ce, .2, .7)))
+                           : lerp(after, target, ease(win(ce, .3, .85)));
+    // the form arrives once its side has the screen, so it is never read on the other ground
+    resaEl.style.opacity = reduce ? '1' : ease(win(ce, phone.matches ? .62 : .72, 1)).toFixed(3);
+    if (ce > 0) split = cs;
+    var lampsLocal = lerp(50, phone.matches ? 42 : 30, ease(win(Ls, .34, .84)));
+    lampsStage.style.setProperty('--split', lampsLocal.toFixed(3));
+    close.querySelector('.close__stage').style.setProperty('--split', (ce > 0 ? cs : after).toFixed(3));
+    root.style.setProperty('--split-px', (split / 100 * geo.w).toFixed(1) + 'px');
+    // the clock badge never leaves the screen, and a side label bows out once its side has
+    root.style.setProperty('--clock-px', clamp(split / 100 * geo.w, 44, geo.w - 44).toFixed(1) + 'px');
+    labelDay.style.opacity = clamp((split - 6) / 14, 0, 1).toFixed(2);
+    labelNight.style.opacity = clamp((94 - split) / 14, 0, 1).toFixed(2);
+
+    // the clock: scroll owns it until the visitor turns it
+    var h = (ce >= 1 || touched) && y >= geo.close.top - 2 ? chosen : hourAt(y);
+    if (touched && ce > .5) h = chosen;
+    timeEl.textContent = fmt(h);
+    setHands(h);
+  }
+
+  measure(); frame();
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', function () { measure(); schedule(); });
+  if (document.fonts) document.fonts.ready.then(function () { measure(); schedule(); });
+  addEventListener('load', function () { measure(); schedule(); });
+})();
+</script>
+</body>
+</html>
