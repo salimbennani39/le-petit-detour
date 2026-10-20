@@ -643,8 +643,8 @@
         <p class="resa__error" id="resa-error" role="alert" data-error></p>
         <div class="resa__send" data-sc-cue="0.02">
           <button type="submit" class="cta" data-send disabled>Réserver</button>
-          <noscript><p class="resa__note">Pour réserver, appelez le <a href="tel:+34647591229">+34 647 591 229</a>.</p></noscript>
-          <p class="resa__note">Votre demande part sur WhatsApp, l'équipe vous confirme la table. Ou appelez le <a href="tel:+34647591229">+34 647 591 229</a>.</p>
+          <noscript><p class="resa__note">Pour réserver, appelez le <a href="https://salimbennani39.github.io/showcase/404.html">+34 647 591 229</a>.</p></noscript>
+          <p class="resa__note">Votre demande part sur WhatsApp, l'équipe vous confirme la table. Ou appelez le <a href="https://salimbennani39.github.io/showcase/404.html">+34 647 591 229</a>.</p>
         </div>
       </form>
 
@@ -652,7 +652,7 @@
         <span>Le Petit Détour · Rue de Hollande, Tanger</span>
         <span>Tous les jours, 12h à minuit</span>
         <a href="https://www.google.com/maps/search/?api=1&query=Centre+Ville+Tanger" rel="noopener" target="_blank">Itinéraire</a>
-        <a href="tel:+34647591229">+34 647 591 229</a>
+        <a href="https://salimbennani39.github.io/showcase/404.html">+34 647 591 229</a>
         <a href="#" rel="noopener" target="_blank">Instagram</a>
       </footer>
     </div>
@@ -831,7 +831,7 @@ ScrollCraft.mount(document.body);
     if (picks.length) msg += '\nÀ signaler (allergies ou régime) : ' + picks.join(', ') + '.';
     if (extra) msg += '\n' + extra.replace(/[.!?…]*$/, '') + '.';
     msg += '\nMerci !';
-    window.open('https://wa.me/34647591229?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    window.open('https://salimbennani39.github.io/showcase/404.html' + encodeURIComponent(msg), '_blank', 'noopener');
   });
 
   /* ---- pointer lean on the hero (fine pointers only) -------------------- */
@@ -913,10 +913,12 @@ ScrollCraft.mount(document.body);
   addEventListener('load', function () { measure(); schedule(); });
 })();
 </script>
-<script>/* showcase: links that lead nowhere open the Showcase 404 */
+<script>/* showcase: links that lead nowhere, and booking / WhatsApp / call links, open the Showcase 404 */
 (()=>{const U='https://salimbennani39.github.io/showcase/404.html';
-const dead=a=>{const h=(a.getAttribute('href')||'').trim();return h===''||h==='#'||h==='#!'||/^javascript:/i.test(h)};
-addEventListener('click',e=>{if(e.defaultPrevented)return;const a=e.target.closest&&e.target.closest('a');
-if(a&&dead(a)){e.preventDefault();location.href=U;}});})();</script>
+const dead=a=>{const h=(a.getAttribute('href')||'').trim();return h===''||h==='#'||h==='#!'||/^javascript:/i.test(h)||/^(tel:|sms:|mailto:|https?:\/\/(api\.|web\.)?(wa\.me|whatsapp\.com))/i.test(h)};
+addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a');if(!a)return;
+const h=(a.getAttribute('href')||'').trim();const contact=/^(tel:|sms:|mailto:|https?:)/i.test(h);
+if(dead(a)&&(contact||!e.defaultPrevented)){e.preventDefault();e.stopImmediatePropagation();location.href=U;}},true);
+const o=window.open;window.open=function(u){if(/(wa\.me|whatsapp\.com|^tel:)/i.test(String(u||'')))return location.href=U,null;return o.apply(this,arguments)};})();</script>
 </body>
 </html>
